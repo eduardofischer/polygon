@@ -3,10 +3,11 @@ const socket = io();
 let players_list = {}; // PLayers List
 
 function login() {
-    const username = document.querySelector('#username_input').value;
-    socket.emit('new_player', {user: username});
+    const name = document.querySelector('#username_input').value;
+    const color = document.querySelector('#colors').dataset.color;
+    socket.emit('new_player', {user: name});
 
-    return username;
+    return {name, color};
 }
 
 socket.on('state_update', list => {

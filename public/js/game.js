@@ -219,7 +219,14 @@ function render() {
 }
 
 function loop() {
-    update_server(player);
+    update_server({
+        angle: player.angle,
+        pos_x: player.pos_x,
+        pos_y: player.pos_y,
+        size: player.size,
+        color: player.color,
+        n_sides: player.n_sides,
+        name: player.name});
     update_game();
     render();
     window.requestAnimationFrame(loop);
@@ -227,17 +234,12 @@ function loop() {
 
 function start_game() {
     const login_box = document.querySelector('#login_box');
-    player.name = login();
+    const player_info = login();
+    player.name = player_info.name;
+    player.color = player_info.color;
     document.querySelector('body').removeChild(login_box);
     window.requestAnimationFrame(loop);
 }
 
 update_game();
 ctx.drawImage(map_render, game.camera_x, game.camera_y, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
-
-// Envia formulario de login ao pressionar enter
-document.querySelector('#login_box').addEventListener('keypress', event => {
-    if (event.keyCode == 13) {
-        start_game();
-    }
-})

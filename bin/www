@@ -43,7 +43,6 @@ io.on('connection', (socket) => {
     socket.on('new_player', function (msg) {
       console.log(msg.user, 'joined the game!');
       this_player = msg.user;
-      socket.emit('player');
     });
 
     socket.on('player_update', player => {
@@ -52,7 +51,7 @@ io.on('connection', (socket) => {
   
     socket.on('disconnect', function (player, outro) {
       delete player_list[this_player];
-      console.log(this_player + ' left the game.');
+      console.log(this_player, 'left the game.');
     });
 
     setInterval(() => socket.broadcast.emit('state_update', player_list), 1000/60);

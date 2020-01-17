@@ -60,5 +60,4 @@ function draw_player(ctx, player, game, itself) {
     name_x = pposx - ctx.measureText(player.name).width/2;
     name_y = pposy + player.size/2 + 25;
     ctx.fillText(player.name, name_x, name_y);
-
 }
