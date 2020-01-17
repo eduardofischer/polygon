@@ -5,8 +5,16 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
+    <div id="login_box">
+      <h1>POLYGON</h1>
+      <input type="text" id="username_input" placeholder="nickname" autofocus>
+      <button id="login_button" onclick="start_game()">Join!</button>
+    </div>
     <canvas id='game_canvas'></canvas>
   </body>
+  <script src='js/index.js'></script>
   <script src='js/canvas.js'></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src='js/network.js'></script>
   <script src='js/game.js'></script>
 </html>
