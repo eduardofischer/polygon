@@ -47,14 +47,13 @@ io.on('connection', (socket) => {
 
     socket.on('player_update', player => {
       player_list[player.name] = player;
+      socket.emit('state_update', player_list);
     });
   
     socket.on('disconnect', function (player, outro) {
       delete player_list[this_player];
       console.log(this_player, 'left the game.');
     });
-
-    setInterval(() => socket.broadcast.emit('state_update', player_list), 1000/60);
 });
 
 
