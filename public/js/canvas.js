@@ -5,7 +5,7 @@ function draw_triangle(context, x, y, size, angle, color) {
     context.translate(x, y);
     context.rotate((Math.PI / 180) * angle);
     context.moveTo(0, -(2/3)*t_height);
-    ctx.lineWidth = 14;
+    context.lineWidth = 14;
     context.strokeStyle = '#FFFFFF';
     context.stroke();
     context.lineTo(-size/2, (1/3)*t_height);
@@ -25,7 +25,7 @@ function draw_square(context, x, y, size, angle, color) {
     context.restore();
 }
 
-function draw_map(game) {
+function render_map(game) {
     const grid_width = game.map_width + 2*game.map_margin;
     const grid_height = game.map_height + 2*game.map_margin;
 
@@ -43,11 +43,11 @@ function draw_map(game) {
 function draw_player(ctx, player, game, itself) {
     let pposx, pposy, name_x, name_y;
     if(itself) {
-        pposx = player.screen_x;
-        pposy = player.screen_y;
+        pposx = game.player_screen_x;
+        pposy = game.player_screen_y;
     } else {
-        pposx = player.pos_x*game.tile_size - game.camera_x;
-        pposy = player.pos_y*game.tile_size - game.camera_y;
+        pposx = player.x*game.tile_size - game.camera_x;
+        pposy = player.y*game.tile_size - game.camera_y;
     }
 
     switch(player.n_sides) {

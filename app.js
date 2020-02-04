@@ -4,6 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var sassMiddleware = require('node-sass-middleware');
+var minify = require('express-minify');
+var compression = require('compression');
 
 var indexRouter = require('./routes/index');
 
@@ -23,6 +25,9 @@ app.use(sassMiddleware({
   indentedSyntax: true, // true = .sass and false = .scss
   sourceMap: true
 }));
+
+app.use(compression());
+app.use(minify());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
