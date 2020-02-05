@@ -42,9 +42,13 @@ function Game() {
     this.render_frame = () => {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.draw_map();
-        for(p of get_near_players(players_list)) {
+        // Render projectiles
+        for(p of get_near_projectiles(projectiles))
+            draw_projectile(this.ctx, p, this);
+        // Render other player
+        for(p of get_near_players(players_list))
             draw_player(this.ctx, p, this, false);
-        }
+        // Render player
         draw_player(this.ctx, player, this, true);
     }
 }
@@ -61,6 +65,9 @@ function Player(n_sides, size, color, name) {
     this.max_velocity = INITIAL_MAX_SPEED;
     this.hit_radius = Math.floor((1/3 * this.size)/game.tile_size);
     this.name = name;
+    this.projectile_velocity = 0.3;
+    this.fire_period = 5;
+    this.fire_count = 0;
 
     this.update_velocity = () => {
         if(kb[87] && !(kb[65] || kb[68])) // Going N
@@ -102,6 +109,40 @@ function Player(n_sides, size, color, name) {
         this.color = p.color;
         this.max_velocity = p.max_velocity;
         this.hit_radius = p.hit_radius;
+    }
+
+    this.fire = () => {
+        projectiles.push(new Projectile(this));
+    }
+
+    this.process_shoot = () => {
+        if(kb[32])
+            this.fire_count--;
+        else
+            this.fire_count = 0;
+
+        if(this.fire_count < 0) {
+            this.fire();
+            this.fire_count = this.fire_period;
+        }
+    }
+}
+
+function Projectile(player) {
+    this.x = player.x;
+    this.y = player.y;
+    this.vx = player.projectile_velocity * Math.cos(player.angle*Math.PI/180);
+    this.vy = -(player.projectile_velocity * Math.sin(player.angle*Math.PI/180));
+    this.power = 10;
+    this.radius = 10;
+    this.player = player.name;
+    this.dtl = 20; // distance-to-live
+    this.color = '#ecf0f1';
+
+    this.update_position = () => {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.dtl -= Math.sqrt(Math.pow(this.vx, 2) + Math.pow(this.vy, 2));
     }
 }
 
@@ -176,7 +217,8 @@ const kb = {
     87: false, // W
     65: false, // A
     83: false, // S
-    68: false  // D
+    68: false, // D
+    32: false  // SPACE
 }
 
 function keyDownHandler(event) {
@@ -185,6 +227,7 @@ function keyDownHandler(event) {
         case 65: // A
         case 83: // S
         case 68: // D
+        case 32: // SPACE
             kb[event.which || event.keyCode] = true;
     }
 }
@@ -195,6 +238,7 @@ function keyUpHandler(event) {
         case 65: // A
         case 83: // S
         case 68: // D
+        case 32: // SPACE
             kb[event.which || event.keyCode] = false;
     }
 }
@@ -279,12 +323,46 @@ function get_near_players(players_list) {
     return near_players;
 }
 
-function loop() {
-    player.update_velocity();
+function get_near_projectiles(projectiles) {
+    const near_projectiles = [];
+    let pposx, pposy;
+    for(let p of projectiles) {
+        pposx = p.x*game.tile_size;
+        pposy = p.y*game.tile_size;
+        if(p.name != player.name) {
+            if(pposx > game.camera_x - p.radius && pposx < game.camera_x + game.view_width + p.radius) {
+                if(pposy > game.camera_y - p.radius && pposy < game.camera_y + game.view_height + p.radius) {
+                    near_projectiles.push(p);
+                }
+            }
+        }
+    }
+    return near_projectiles;
+}
+
+function update_positions() {
+    // Update local player position
     player.update_position();
-    for(p in players_list) // Prevê a movimentação dos players
+
+    // Predicts other players movements
+    for(p in players_list) 
         if(p != player.name)
             players_list[p].update_position();
+
+    // Update projectiles positions
+    projectiles.forEach((p, i) => {
+        if(p.dtl > 0)
+            p.update_position();
+        else
+            projectiles.splice(i, 1);
+    });
+}
+
+function loop() {
+    // console.log(player.angle);
+    player.update_velocity();
+    player.process_shoot();
+    update_positions();
     game.update_camera();
     game.render_frame();
     conn.update_server();
@@ -311,3 +389,4 @@ let game = new Game();
 let conn = new Connection();
 let player;
 let players_list = {}; // Players List
+let projectiles = [];

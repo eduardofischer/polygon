@@ -25,6 +25,16 @@ function draw_square(context, x, y, size, angle, color) {
     context.restore();
 }
 
+function draw_circle(context, x, y, radius, color) {
+    context.save();
+    context.beginPath();
+    context.arc(x, y, radius, 0, 2*Math.PI)
+    context.fillStyle = color;
+    context.fill();
+    context.closePath();
+    context.restore();
+}
+
 function render_map(game) {
     const grid_width = game.map_width + 2*game.map_margin;
     const grid_height = game.map_height + 2*game.map_margin;
@@ -60,4 +70,13 @@ function draw_player(ctx, player, game, itself) {
     name_x = pposx - ctx.measureText(player.name).width/2;
     name_y = pposy + player.size/2 + 25;
     ctx.fillText(player.name, name_x, name_y);
+}
+
+function draw_projectile(ctx, projectile, game) {
+    let pposx, pposy;
+
+    pposx = projectile.x*game.tile_size - game.camera_x;
+    pposy = projectile.y*game.tile_size - game.camera_y;
+
+    draw_circle(ctx, pposx, pposy, projectile.radius, projectile.color);
 }
