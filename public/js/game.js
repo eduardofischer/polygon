@@ -1,6 +1,6 @@
 const PLAYER_SPAWN_X = 228;
 const PLAYER_SPAWN_Y = 228;
-const INITIAL_MAX_SPEED = 0.2;
+const INITIAL_MAX_SPEED = 0.1;
 
 function Game() {
     this.map_margin = 100;
@@ -66,7 +66,7 @@ function Player(n_sides, size, color, name) {
     this.hit_radius = Math.floor((1/3 * this.size)/game.tile_size);
     this.name = name;
     this.projectile_velocity = 0.3;
-    this.fire_period = 5;
+    this.fire_period = 40;
     this.fire_count = 0;
 
     this.update_velocity = () => {
@@ -116,7 +116,7 @@ function Player(n_sides, size, color, name) {
     }
 
     this.process_shoot = () => {
-        if(kb[32])
+        if(kb[32] || mouse[1])
             this.fire_count--;
         else
             this.fire_count = 0;
@@ -212,6 +212,14 @@ function pointerHandler(event) {
         player.angle = 360 - player.angle;
 }
 
+function mousedownHandler(event) {
+    mouse[1] = true
+}
+
+function mouseupHandler(event) {
+    mouse[1] = false
+}
+
 // KEYBOARD
 const kb = {
     87: false, // W
@@ -219,6 +227,10 @@ const kb = {
     83: false, // S
     68: false, // D
     32: false  // SPACE
+}
+
+const mouse = {
+    1: false
 }
 
 function keyDownHandler(event) {
@@ -379,6 +391,8 @@ function start_game() {
 
     window.addEventListener('resize', game.update_screen_size);
     document.addEventListener("mousemove", pointerHandler, false);
+    document.addEventListener("mousedown", mousedownHandler, false);
+    document.addEventListener("mouseup", mouseupHandler, false);
     document.addEventListener("keydown", keyDownHandler, false);
     document.addEventListener("keyup", keyUpHandler, false);
 
