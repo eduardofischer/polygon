@@ -1,12 +1,16 @@
+const PROJ_DEFAULT_DTL = 30;
+const PROJ_DEFAULT_RADIUS = 10;
+const PROJ_DEFAULT_POWER = 10;
+
 export function Projectile(player) {
   this.x = player.x;
   this.y = player.y;
   this.vx = player.projectile_velocity * Math.cos(player.angle*Math.PI/180);
   this.vy = -(player.projectile_velocity * Math.sin(player.angle*Math.PI/180));
-  this.power = 10;
-  this.radius = 10;
+  this.power = PROJ_DEFAULT_POWER;
+  this.radius = PROJ_DEFAULT_RADIUS;
   this.player = player.name;
-  this.dtl = 20; // distance-to-live
+  this.dtl = PROJ_DEFAULT_DTL; // distance-to-live
   this.color = '#ecf0f1';
 
   this.update_position = () => {

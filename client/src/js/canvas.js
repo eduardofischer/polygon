@@ -72,11 +72,11 @@ function draw_player(ctx, player, game, itself) {
   ctx.fillText(player.name, name_x, name_y);
 }
 
-function draw_projectile(ctx, projectile, game) {
+function draw_projectile(ctx, projectile, client) {
   let pposx, pposy;
 
-  pposx = projectile.x*game.tile_size - game.camera_x;
-  pposy = projectile.y*game.tile_size - game.camera_y;
+  pposx = projectile.x*client.game.tile_size - client.camera_x;
+  pposy = projectile.y*client.game.tile_size - client.camera_y;
 
   draw_circle(ctx, pposx, pposy, projectile.radius, projectile.color);
 }

@@ -55,13 +55,45 @@ export class Client {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.draw_map();
     // Render projectiles
-    for(let p of this.game.get_near_projectiles())
+    for(let p of this.get_near_projectiles())
       draw_projectile(this.ctx, p, this);
     // Render other player
-    for(let p of this.game.get_near_players())
+    for(let p of this.get_near_players())
       draw_player(this.ctx, p, this, false);
     // Render player
     draw_player(this.ctx, this.player, this, true);
+  }
+
+  get_near_players() {
+    const near_players = [];
+    let pposx, pposy;
+    for(let p in this.game.players_list) {
+      pposx = this.players_list[p].x*this.tile_size;
+      pposy = this.players_list[p].y*this.tile_size;
+      if(this.players_list[p].name != this.player.name) {
+        if(pposx > this.camera_x - this.game.players_list[p].size/2 && pposx < this.camera_x + this.view_width + this.game.players_list[p].size/2) {
+          if(pposy > this.camera_y - this.game.players_list[p].size/2 && pposy < this.camera_y + this.view_height + this.game.players_list[p].size/2) {
+            near_players.push(this.game.players_list[p]);
+          }
+        }
+      }
+    }
+    return near_players;
+  }
+  
+  get_near_projectiles() {
+    const near_projectiles = [];
+    let pposx, pposy;
+    for(let p of this.game.projectiles) {
+      pposx = p.x*this.game.tile_size;
+      pposy = p.y*this.game.tile_size;
+      if(pposx > this.camera_x - p.radius && pposx < this.camera_x + this.view_width + p.radius) {
+        if(pposy > this.camera_y - p.radius && pposy < this.camera_y + this.view_height + p.radius) {
+          near_projectiles.push(p);
+        }
+      }
+    }
+    return near_projectiles;
   }
 
   check_movement() {

@@ -3,6 +3,7 @@ import { Projectile } from './Projectile'
 const PLAYER_SPAWN_X = 228;
 const PLAYER_SPAWN_Y = 228;
 const INITIAL_MAX_SPEED = 0.2;
+const PLAYER_DEFAULT_FIRE_PERIOD = 30;
 
 export class Player {
   constructor(n_sides, size, color, name, game) {
@@ -18,8 +19,8 @@ export class Player {
     this.hit_radius = Math.floor((1/3 * this.size)/game.tile_size);
     this.name = name;
     this.projectile_velocity = 0.3;
-    this.fire_period = 40;
-    this.fire_count = 0;
+    this.fire_period = PLAYER_DEFAULT_FIRE_PERIOD;
+    this.fire_count = PLAYER_DEFAULT_FIRE_PERIOD;
   }
 
   update_velocity(direction, game) {
@@ -81,20 +82,17 @@ export class Player {
   }
 
   fire() {
+    this.fire_count = this.fire_period;
     return new Projectile(this);
   }
 
-  process_shoot(shoot_btn_pressed) { // kb[32] || mouse[1]
-    if(shoot_btn_pressed)
-      this.fire_count--;
-    else
-      this.fire_count = 0;
-
-    if(this.fire_count < 0) {
-      this.fire_count = this.fire_period;
+  process_shoot(shoot_btn_pressed) {
+    if (shoot_btn_pressed && this.fire_count <= 0)
       return this.fire();
-    }
 
+    if(this.fire_count > 0)
+      this.fire_count--;
+    
     return null;
   }
 

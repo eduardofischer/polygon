@@ -35,40 +35,6 @@ export class Game {
     return map;
   }
 
-  get_near_players(player) {
-    const near_players = [];
-    let pposx, pposy;
-    for(let p in this.players_list) {
-      pposx = this.players_list[p].x*this.game.tile_size;
-      pposy = this.players_list[p].y*this.game.tile_size;
-      if(this.players_list[p].name != player.name) {
-        if(pposx > this.game.camera_x - this.players_list[p].size/2 && pposx < this.game.camera_x + this.game.view_width + this.players_list[p].size/2) {
-          if(pposy > this.game.camera_y - this.players_list[p].size/2 && pposy < this.game.camera_y + this.game.view_height + this.players_list[p].size/2) {
-            near_players.push(this.players_list[p]);
-          }
-        }
-      }
-    }
-    return near_players;
-  }
-  
-  get_near_projectiles(player) {
-    const near_projectiles = [];
-    let pposx, pposy;
-    for(let p of this.projectiles) {
-      pposx = p.x*this.game.tile_size;
-      pposy = p.y*this.game.tile_size;
-      if(p.name != player.name) {
-        if(pposx > this.game.camera_x - p.radius && pposx < this.game.camera_x + this.game.view_width + p.radius) {
-          if(pposy > this.game.camera_y - p.radius && pposy < this.game.camera_y + this.game.view_height + p.radius) {
-            near_projectiles.push(p);
-          }
-        }
-      }
-    }
-    return near_projectiles;
-  }
-
   update_positions() {
     // Update players positions
     this.players_list.forEach(p => {
