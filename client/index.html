@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Polygon!</title>
+  </head>
+  <body>
+    <div id="login_box">
+      <h1>POLYGON</h1>
+      <input type="text" id="username_input" placeholder="nickname" autofocus>
+      <div id="colors" style="text-align: left" data-color='#9b59b6'>
+        <input type="radio" class="color" name="color" id="cl1" value="#9b59b6" checked/>
+        <input type="radio" class="color" name="color" id="cl2" value="#3498db"/>
+        <input type="radio" class="color" name="color" id="cl3" value="#f1c40f"/>
+        <input type="radio" class="color" name="color" id="cl4" value="#e74c3c"/>
+      </div>
+      <button id="login_button" onclick="start_game()">Join!</button>
+    </div>
+    <canvas id='game_canvas'></canvas>
+  </body>
+</html>
