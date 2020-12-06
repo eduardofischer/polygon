@@ -3,19 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "./bin/www",
-    "dev": "nodemon ./bin/www"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "dependencies": {
-    "compression": "^1.7.4",
     "cookie-parser": "~1.4.4",
-    "debug": "~2.6.9",
-    "ejs": "~2.6.1",
     "express": "~4.16.1",
-    "express-minify": "^1.0.0",
-    "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
-    "node-sass-middleware": "0.11.0",
     "socket.io": "^2.3.0"
   },
   "devDependencies": {

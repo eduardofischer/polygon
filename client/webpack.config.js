@@ -1,7 +1,11 @@
-var HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
-const Dotenv = require('dotenv-webpack');
+
+require('dotenv').config({
+  path: path.join(__dirname, '../.env'),
+});
 
 module.exports = {
   mode: 'development',
@@ -28,7 +32,13 @@ module.exports = {
   devtool: 'inline-source-map',
   plugins: [
     new HtmlWebpackPlugin({ title: 'Development', template: './index.html' }),
-    new Dotenv({ path: path.join(__dirname, '../.env') }),
+    new webpack.EnvironmentPlugin(['APP_ENV', 'SERVER_URL']),
+    new ESLintPlugin({
+      fix: true,
+      context:  path.resolve(__dirname, '..'),
+      files: ['shared', 'client/src/js'],
+      failOnError: false
+    })
   ],
   devServer: {
     contentBase: path.join(__dirname, '../dist'),

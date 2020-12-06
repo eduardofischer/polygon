@@ -6,12 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "serve": "webpack serve"
+    "serve": "webpack serve",
+    "lint": "eslint ./src/js ../shared --ext .js --ignore-pattern ./node_modules --fix "
   },
   "author": "Eduardo Fischer",
   "license": "UNLICENSED",
   "devDependencies": {
     "css-loader": "^5.0.1",
+    "eslint": "^7.15.0",
+    "eslint-webpack-plugin": "^2.4.1",
     "html-webpack-plugin": "^4.5.0",
     "sass": "^1.30.0",
     "sass-loader": "^10.1.0",
@@ -22,7 +25,6 @@
   },
   "dependencies": {
     "dotenv": "^8.2.0",
-    "dotenv-webpack": "^6.0.0",
     "socket.io-client": "^3.0.3"
   }
 }
