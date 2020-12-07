@@ -1,11 +1,11 @@
-import { Projectile } from './Projectile'
+const Projectile = require('./Projectile');
 
 const PLAYER_SPAWN_X = 228;
 const PLAYER_SPAWN_Y = 228;
 const INITIAL_MAX_SPEED = 0.2;
 const PLAYER_DEFAULT_FIRE_PERIOD = 30;
 
-export class Player {
+class Player {
   constructor(n_sides, size, color, name, game) {
     this.x = PLAYER_SPAWN_X;
     this.y = PLAYER_SPAWN_Y;
@@ -158,3 +158,5 @@ export class Player {
     }
   }
 }
+
+module.exports = Player;

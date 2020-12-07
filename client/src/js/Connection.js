@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client'
-import { Player } from '../../../shared/Player'
+const Player = require('@shared/Player');
 
 export class Connection {
   constructor(client) {

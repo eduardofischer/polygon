@@ -40,6 +40,11 @@ module.exports = {
       failOnError: false
     })
   ],
+  resolve: {
+    alias: {
+      '@shared': path.resolve(__dirname, '../shared/')
+    },
+  },
   devServer: {
     contentBase: path.join(__dirname, '../dist'),
     compress: true,

@@ -1,3 +1,5 @@
+const Game = require('@shared/Game');
+
 let player_list = {};
 let projectiles = [];
 

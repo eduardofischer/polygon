@@ -7,12 +7,18 @@
     "dev": "nodemon app.js"
   },
   "dependencies": {
+    "better-module-alias": "^1.1.0",
     "cookie-parser": "~1.4.4",
     "express": "~4.16.1",
+    "module-alias": "^2.2.2",
     "morgan": "~1.9.1",
     "socket.io": "^2.3.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"
+  },
+  "_moduleAliases": {
+    "@root": ".",
+    "@shared": "../shared"
   }
 }

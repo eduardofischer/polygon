@@ -1,6 +1,6 @@
 import "../sass/style.sass";
-import { Client } from './Client.js'
-import { Player } from '../../../shared/Player'
+import { Client } from './Client.js';
+const Player = require('@shared/Player');
 
 // == LOGIN SCREEN ==
 // Update the player color each time it changes

@@ -19,6 +19,8 @@ $cl9d: #bdc3c7
 $cl10: #95a5a6
 $cl10d: #7f8c8d
 
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap')
+
 body
   margin: 0
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif
@@ -53,6 +55,7 @@ a
   flex-direction: column
   h1  
     margin-top: 0
+    font-family: 'Press Start 2P', cursive
   button 
     width: 80%
     background-color: #9b59b6
@@ -63,6 +66,10 @@ a
     border-style: none
     &:hover
       opacity: 0.8
+  
+  #username_input
+    &:focus
+      outline: none
 
   div#colors
     margin: 20px 0

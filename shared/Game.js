@@ -1,4 +1,4 @@
-export class Game {
+class Game {
   constructor() {
     this.map_margin = 100;
     this.map = [];
@@ -50,3 +50,5 @@ export class Game {
     });
   }
 }
+
+module.exports = Game;

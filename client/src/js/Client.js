@@ -1,7 +1,6 @@
 import { render_map, draw_player, draw_projectile } from './canvas'
 import { Connection } from './Connection.js'
-import { Game } from '../../../shared/Game'
-
+const Game = require('@shared/Game')
 export class Client {
   constructor() {
     this.game = new Game();
