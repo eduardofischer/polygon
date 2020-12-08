@@ -7,6 +7,7 @@ const PLAYER_DEFAULT_FIRE_PERIOD = 30;
 
 class Player {
   constructor(n_sides, size, color, name, game) {
+    // this.id = id;
     this.x = PLAYER_SPAWN_X;
     this.y = PLAYER_SPAWN_Y;
     this.vx = 0;

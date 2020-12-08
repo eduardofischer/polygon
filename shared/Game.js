@@ -6,7 +6,7 @@ class Game {
     this.map_height = 256;
     this.tile_size = 20;
     this.map = this.generate_map();
-    this.players_list = [];
+    this.players = {};
     this.projectiles = [];
   }
   
@@ -37,9 +37,8 @@ class Game {
 
   update_positions() {
     // Update players positions
-    this.players_list.forEach(p => {
-      p.update_position();
-    })
+    for(let p in this.players)
+      this.players[p].update_position();
   
     // Update projectiles positions
     this.projectiles.forEach((p, i) => {

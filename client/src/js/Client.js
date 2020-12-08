@@ -1,10 +1,11 @@
 import { render_map, draw_player, draw_projectile } from './canvas'
-import { Connection } from './Connection.js'
-const Game = require('@shared/Game')
+import { io } from 'socket.io-client';
+import Player from '../../../shared/Player';
+const Game = require('@shared/Game');
+
 export class Client {
   constructor() {
     this.game = new Game();
-    this.connection = new Connection(this);
     this.player = null;
     this.map_render = render_map(this.game);
     this.camera_x;
@@ -17,7 +18,7 @@ export class Client {
     this.ctx = this.canvas.getContext('2d');
     this.canvas.width = this.view_width;
     this.canvas.height = this.view_height;
-
+    
     // KEYBOARD KEY-PRESS CONTROL
     this.kb = {
       87: false, // W
@@ -30,6 +31,30 @@ export class Client {
     this.mouse = {
       1: false
     }
+    
+    // Socket.io Connection
+    this.socket = process.env.SERVER_URL ? io(process.env.SERVER_URL) : io();
+
+    this.socket.on('state_update', data => {
+      for (let p in data.players) {
+        if (p in this.game.players)
+          this.game.players[p].update(data.players[p]);
+        else
+          this.game.players[p] = new Player(data.players[p].n_sides, data.players[p].size, data.players[p].color, data.players[p].name, this.game);
+      }
+      // for(let p of data.projectiles) {
+      //   const idx = this.game.projectiles.findIndex(e => e.name == p.name);
+      //   if (idx >= 0)
+      //     this.game.players_list[idx].update(p);
+      //   else
+      //     this.game.players_list.push(new Player(p.n_sides, p.size, p.color, p.name, this.game));
+      // }
+    });
+    
+    this.socket.on('player_disconnected', name => {
+      console.debug(`Player ${name} disconnected.`);
+      delete this.game.players[name];
+    });
   }
   
   update_screen_size() {
@@ -66,13 +91,13 @@ export class Client {
   get_near_players() {
     const near_players = [];
     let pposx, pposy;
-    for(let p in this.game.players_list) {
-      pposx = this.players_list[p].x*this.tile_size;
-      pposy = this.players_list[p].y*this.tile_size;
-      if(this.players_list[p].name != this.player.name) {
-        if(pposx > this.camera_x - this.game.players_list[p].size/2 && pposx < this.camera_x + this.view_width + this.game.players_list[p].size/2) {
-          if(pposy > this.camera_y - this.game.players_list[p].size/2 && pposy < this.camera_y + this.view_height + this.game.players_list[p].size/2) {
-            near_players.push(this.game.players_list[p]);
+    for(let p in this.game.players) {
+      pposx = this.game.players[p].x*this.game.tile_size;
+      pposy = this.game.players[p].y*this.game.tile_size;
+      if(this.game.players[p].name != this.player.name) {
+        if(pposx > this.camera_x - this.game.players[p].size/2 && pposx < this.camera_x + this.view_width + this.game.players[p].size/2) {
+          if(pposy > this.camera_y - this.game.players[p].size/2 && pposy < this.camera_y + this.view_height + this.game.players[p].size/2) {
+            near_players.push(this.game.players[p]);
           }
         }
       }
@@ -110,5 +135,17 @@ export class Client {
   check_shooting() {
     if (this.mouse[1]) return this.player.angle;
     return null;
+  }
+
+  login() {
+    const name = document.querySelector('#username_input').value;
+    const color = document.querySelector('#colors').dataset.color;
+    this.socket.emit('new_player', { name, color });
+  
+    return {name, color};
+  }
+  
+  update_server(packet) {
+    this.socket.emit('player_update', packet);
   }
 }

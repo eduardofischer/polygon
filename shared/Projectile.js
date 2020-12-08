@@ -4,6 +4,7 @@ const PROJ_DEFAULT_POWER = 10;
 
 class Projectile {
   constructor (player){
+    // this.id = id;
     this.x = player.x;
     this.y = player.y;
     this.vx = player.projectile_velocity * Math.cos(player.angle*Math.PI/180);
@@ -13,6 +14,14 @@ class Projectile {
     this.player = player.name;
     this.dtl = PROJ_DEFAULT_DTL; // distance-to-live
     this.color = '#ecf0f1';
+  }
+
+  update(p) {
+    this.x = p.x;
+    this.y = p.y;
+    this.raadius = p.radius;
+    this.dtl = p.dtl;
+    this.color = p.color;
   }
   
   update_position() {

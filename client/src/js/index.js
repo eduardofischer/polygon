@@ -83,13 +83,13 @@ function loop() {
 
   client.update_camera();
   client.render_frame();
-  client.connection.update_server(packet);
+  client.update_server(packet);
   window.requestAnimationFrame(loop);
 }
 
 export function start_game() {
   const login_box = document.querySelector('#login_box');
-  const player_info = client.connection.login();
+  const player_info = client.login();
 
   client.player = new Player(3, 70, player_info.color, player_info.name, client.game);
 
@@ -106,5 +106,6 @@ export function start_game() {
 
   window.requestAnimationFrame(loop);
 }
+
 
 const client = new Client();

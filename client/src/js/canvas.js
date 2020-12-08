@@ -50,14 +50,14 @@ function render_map(game) {
   return map_canvas;
 }
 
-function draw_player(ctx, player, game, itself) {
+function draw_player(ctx, player, client, itself) {
   let pposx, pposy, name_x, name_y;
   if(itself) {
-    pposx = game.player_screen_x;
-    pposy = game.player_screen_y;
+    pposx = client.player_screen_x;
+    pposy = client.player_screen_y;
   } else {
-    pposx = player.x*game.tile_size - game.camera_x;
-    pposy = player.y*game.tile_size - game.camera_y;
+    pposx = player.x*client.game.tile_size - client.camera_x;
+    pposy = player.y*client.game.tile_size - client.camera_y;
   }
 
   switch(player.n_sides) {
